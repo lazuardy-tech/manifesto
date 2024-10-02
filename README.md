@@ -5,4 +5,6 @@
 
 ## 📃 manifesto
 
-This is a repository for The Lazuardy Manifesto. Built using [Next](https://nextjs.org).
+The Lazuardy Manifesto for Software Development.
+
+This is a repository for the manifesto. Built using [Next](https://nextjs.org).
