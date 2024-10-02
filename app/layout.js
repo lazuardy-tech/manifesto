@@ -1,5 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
-import "./globals.css";
+import "@/app/globals.css";
+import "splitting/dist/splitting.css";
+import "splitting/dist/splitting-cells.css";
 
 export const metadata = {
   title: "The Lazuardy Manifesto",
