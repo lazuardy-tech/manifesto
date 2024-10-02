@@ -2,26 +2,866 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+:root {
+    font-size: 16px;
+    --color-text: #fff;
+    --color-bg: #000;
+    --color-link: #fff;
+    --color-link-hover: #fff;
+    --page-padding: 1.5rem 2rem;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    font-family:
+        area-normal,
+        -apple-system,
+        BlinkMacSystemFont,
+        Segoe UI,
+        Helvetica,
+        Arial,
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.demo-1 {
+    background-image: linear-gradient(
+        180deg,
+        hsl(240deg 91% 49%) 0%,
+        hsl(252deg 93% 47%) 10%,
+        hsl(258deg 93% 46%) 20%,
+        hsl(263deg 93% 46%) 30%,
+        hsl(266deg 91% 45%) 40%,
+        hsl(269deg 88% 45%) 50%,
+        hsl(272deg 78% 43%) 60%,
+        hsl(275deg 69% 40%) 70%,
+        hsl(277deg 60% 37%) 80%,
+        hsl(294deg 74% 43%) 90%,
+        hsl(258deg 76% 45%) 100%
+    );
+}
+
+.demo-2 {
+    --color-text: #ddc4a4;
+    --color-bg: #0e0e0e;
+    --color-link: #ede3e3;
+    --color-link-hover: #d68521;
+}
+
+/* Page Loader */
+.js .loading::before,
+.js .loading::after {
+    content: "";
+    position: fixed;
+    z-index: 1000;
+}
+
+.js .loading::before {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--color-bg);
+}
+
+.js .loading::after {
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px 0 0 -30px;
+    border-radius: 50%;
+    opacity: 0.4;
+    background: var(--color-link);
+    animation: loaderAnim 0.7s linear infinite alternate forwards;
+}
+
+@keyframes loaderAnim {
+    to {
+        opacity: 1;
+        transform: scale3d(0.5, 0.5, 1);
+    }
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-link);
+    outline: none;
+    cursor: pointer;
+}
+
+a:hover {
+    color: var(--color-link-hover);
+    outline: none;
+}
+
+/* Better focus styles from https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible */
+a:focus {
+    /* Provide a fallback style for browsers
+	 that don't support :focus-visible */
+    outline: none;
+    background: lightgrey;
+}
+
+a:focus:not(:focus-visible) {
+    /* Remove the focus indicator on mouse-focus for browsers
+	 that do support :focus-visible */
+    background: transparent;
+}
+
+a:focus-visible {
+    /* Draw a very noticeable focus style for
+	 keyboard-focus on browsers that do support
+	 :focus-visible */
+    outline: 2px solid red;
+    background: transparent;
+}
+
+.unbutton {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.unbutton:focus {
+    outline: none;
+}
+
+main {
+    counter-reset: section;
+}
+
+.splitting .word {
+    white-space: nowrap;
+}
+
+.frame {
+    color: var(--color-title);
+    padding: var(--page-padding);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas: "title" "prev" "demos" "sponsor";
+    justify-content: start;
+    justify-items: end;
+    margin-bottom: 3rem;
+    grid-gap: 0.5rem;
+    align-items: start;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.frame a:not(.frame__title-back),
+.line {
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+}
+
+.frame a:not(.frame__title-back)::before,
+.line::before {
+    content: "";
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    position: absolute;
+    top: 90%;
+    transition: transform 0.3s;
+    transform-origin: 0% 50%;
+}
+
+.frame a:not(.frame__title-back):hover::before,
+.line:hover::before {
+    transform: scaleX(0);
+    transform-origin: 100% 50%;
+}
+
+.frame__title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+}
+
+.frame__title-main {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: normal;
+}
+
+.frame__title-back {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.frame__title-back svg {
+    fill: currentColor;
+}
+
+.frame__prev {
+    grid-area: prev;
+    align-self: start;
+}
+
+.frame__demos {
+    display: flex;
+    gap: 1rem;
+}
+
+.frame__demos span {
+    opacity: 0.7;
+}
+
+.intro {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+}
+
+.intro__title {
+    display: grid;
+    place-items: center;
+    margin: 0;
+    line-height: 0.9;
+    font-weight: 300;
+}
+
+.intro__title-pre {
+    font-family: norman-stencil, sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 10vw, 9rem);
+}
+
+.intro__title-sub {
+    font-size: clamp(1rem, 6vw, 2.75rem);
+}
+
+.intro__info {
+    position: relative;
+    max-width: 20ch;
+    opacity: 0.6;
+    line-height: 1.2;
+    margin-bottom: 4rem;
+    padding-bottom: 1rem;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.intro__info::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 1px;
+    height: 2rem;
+    background: #fff;
+    top: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    position: relative;
+    padding: var(--page-padding);
+}
+
+.content:last-child {
+    padding-bottom: 40vh;
+}
+
+.content--full {
+    padding: 0;
+}
+
+.content p {
+    max-width: 660px;
+    margin: 1.5rem auto;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.content--highlight p {
+    font-size: clamp(1rem, 3vw, 2rem);
+}
+
+.content__title {
+    font-size: 12vw;
+    line-height: 0.8;
+    counter-increment: section;
+    text-align: center;
+    display: grid;
+    gap: 2rem;
+}
+
+.content__title--left {
+    text-align: left;
+}
+
+.content__title--right {
+    text-align: right;
+}
+
+.content__title::before {
+    content: "." counter(section);
+    font-weight: 400;
+    font-family: area-normal, sans-serif;
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 10vh;
+    text-align: center;
+}
+
+.content__title--sides {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 100%;
+    text-align: left;
+    gap: 2rem;
+}
+
+.content__title--sides span:last-child {
+    justify-self: end;
+}
+
+.font-1 {
+    font-family: wayfinder-cf, serif;
+    font-weight: 100;
+}
+
+.font-2 {
+    font-family: campaign-serif, sans-serif;
+    font-weight: 400;
+}
+
+.font-3 {
+    font-family: area-normal, sans-serif;
+    font-weight: 600;
+}
+
+.font-4 {
+    font-family: campaign-serif, sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.font-5 {
+    font-family: zedou, sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.font-6 {
+    font-family: afronaut, sans-serif;
+    font-weight: 400;
+}
+
+.font-7 {
+    font-family: hoss-round-wide, sans-serif;
+    font-weight: 400;
+}
+
+.font-8 {
+    font-family: monotalic, sans-serif;
+    font-weight: 400;
+    text-transform: lowercase;
+}
+
+.font-9 {
+    font-family: aziga, sans-serif;
+    font-weight: 400;
+}
+
+.font-10 {
+    font-family: norman-stencil, sans-serif;
+    font-weight: 800;
+}
+
+.font-11 {
+    font-family: neighbor, sans-serif;
+    font-weight: 400;
+}
+
+.font-12 {
+    font-family: halogen, sans-serif;
+    font-weight: 700;
+}
+
+.font-13 {
+    font-weight: initial;
+    font-family: "marlide-display-variable", sans-serif;
+    font-variation-settings: "wght" 400;
+}
+
+.font-14 {
+    font-weight: initial;
+    font-family: "june-expt-variable", sans-serif;
+    font-variation-settings: "STYL" 0;
+}
+
+.font-15 {
+    font-weight: initial;
+    font-family: "june-expt-variable", sans-serif;
+    font-variation-settings: "STYL" 100;
+}
+
+.font-16 {
+    font-weight: initial;
+    font-family: "inge-variable", sans-serif;
+    font-variation-settings: "slnt" 0;
+}
+
+.font-17 {
+    font-weight: initial;
+    font-family: "antipoda-variable", sans-serif;
+    font-variation-settings:
+        "wght" 450,
+        "wdth" 80;
+}
+
+.font-18 {
+    font-weight: initial;
+    font-family: "vinila-variable", sans-serif;
+    font-variation-settings:
+        "slnt" 0,
+        "wght" 100,
+        "wdth" 100;
+}
+
+.font-19 {
+    font-weight: initial;
+    font-family: "nagel-variable", sans-serif;
+    font-variation-settings:
+        "slnt" 0,
+        "wght" 610;
+}
+
+.font-20 {
+    font-weight: initial;
+    font-family: "borax-variable", sans-serif;
+    font-variation-settings: "wght" 400;
+}
+
+.font-21 {
+    font-family: "gigantic", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+
+.font-22 {
+    font-family: "capsule", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.font-23 {
+    font-family: "arsenica-variable", sans-serif;
+    font-variation-settings:
+        "opsz" 1000,
+        "wght" 300;
+}
+
+.font-height {
+    line-height: 1.4;
+}
+
+.font-height-medium {
+    line-height: 0.9;
+}
+
+.font-medium {
+    font-size: 6vw;
+    margin-top: 3rem;
+}
+
+.font-larger {
+    font-size: 27vw;
+}
+
+.font-upper {
+    text-transform: uppercase;
+}
+
+.font-sub {
+    font-size: 5vw;
+    margin-top: 2rem;
+    display: block;
+}
+
+.splitting .font-sub .word {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.char-wrap {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+
+@media screen and (min-width: 53em) {
+    .frame {
+        justify-items: start;
+        grid-gap: 2rem;
+        grid-template-columns: auto auto 1fr auto;
+        grid-template-rows: auto;
+        grid-template-areas: "title prev demos sponsor";
+    }
+    .frame__demos {
+        justify-self: end;
+    }
+}
+
+/*
+ * The Typekit service used to deliver this font or fonts for use on websites
+ * is provided by Adobe and is subject to these Terms of Use
+ * http://www.adobe.com/products/eulas/tou_typekit. For font license
+ * information, see the list below.
+ *
+ * afronaut:
+ *   - http://typekit.com/eulas/00000000000000007736d6e1
+ * area-normal:
+ *   - http://typekit.com/eulas/0000000000000000774b9fbd
+ *   - http://typekit.com/eulas/0000000000000000774b9fc8
+ * aziga:
+ *   - http://typekit.com/eulas/0000000000000000774ba04d
+ * campaign-serif:
+ *   - http://typekit.com/eulas/00000000000000007736c70c
+ *   - http://typekit.com/eulas/00000000000000007736c70f
+ * halogen:
+ *   - http://typekit.com/eulas/00000000000000007735a374
+ * hoss-round-wide:
+ *   - http://typekit.com/eulas/000000000000000077361110
+ * monotalic:
+ *   - http://typekit.com/eulas/00000000000000007735b6df
+ * neighbor:
+ *   - http://typekit.com/eulas/0000000000000000774b0b24
+ * norman-stencil:
+ *   - http://typekit.com/eulas/00000000000000007736d741
+ * wayfinder-cf:
+ *   - http://typekit.com/eulas/00000000000000007735fa11
+ * zedou:
+ *   - http://typekit.com/eulas/0000000000000000774ba94a
+ *
+ * © 2009-2024 Adobe Systems Incorporated. All Rights Reserved.
+ */
+/*{"last_published":"2023-01-16 22:38:35 UTC"}*/
+
+@import url("https://p.typekit.net/p.css?s=1&k=cvn8slu&ht=tk&f=22050.41817.49468.50265.50268.50336.50338.50383.51699.51705.51798.51900.51907&a=1494256&app=typekit&e=css");
+
+@font-face {
+    font-family: "halogen";
+    src:
+        url("https://use.typekit.net/af/affce1/00000000000000007735a374/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/affce1/00000000000000007735a374/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/affce1/00000000000000007735a374/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 700;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "monotalic";
+    src:
+        url("https://use.typekit.net/af/a83bf7/00000000000000007735b6df/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/a83bf7/00000000000000007735b6df/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/a83bf7/00000000000000007735b6df/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "wayfinder-cf";
+    src:
+        url("https://use.typekit.net/af/d08650/00000000000000007735fa11/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n1&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/d08650/00000000000000007735fa11/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n1&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/d08650/00000000000000007735fa11/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n1&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 100;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "campaign-serif";
+    src:
+        url("https://use.typekit.net/af/fb5173/00000000000000007736c70c/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/fb5173/00000000000000007736c70c/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/fb5173/00000000000000007736c70c/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "campaign-serif";
+    src:
+        url("https://use.typekit.net/af/91ccec/00000000000000007736c70f/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/91ccec/00000000000000007736c70f/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/91ccec/00000000000000007736c70f/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=i4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "hoss-round-wide";
+    src:
+        url("https://use.typekit.net/af/605a45/000000000000000077361110/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/605a45/000000000000000077361110/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/605a45/000000000000000077361110/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "afronaut";
+    src:
+        url("https://use.typekit.net/af/8054e0/00000000000000007736d6e1/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/8054e0/00000000000000007736d6e1/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/8054e0/00000000000000007736d6e1/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "norman-stencil";
+    src:
+        url("https://use.typekit.net/af/d38105/00000000000000007736d741/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/d38105/00000000000000007736d741/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/d38105/00000000000000007736d741/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n8&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 800;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "area-normal";
+    src:
+        url("https://use.typekit.net/af/911b4f/0000000000000000774b9fbd/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/911b4f/0000000000000000774b9fbd/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/911b4f/0000000000000000774b9fbd/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "area-normal";
+    src:
+        url("https://use.typekit.net/af/6f9a29/0000000000000000774b9fc8/30/l?subset_id=2&fvd=n6&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/6f9a29/0000000000000000774b9fc8/30/d?subset_id=2&fvd=n6&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/6f9a29/0000000000000000774b9fc8/30/a?subset_id=2&fvd=n6&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 600;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "aziga";
+    src:
+        url("https://use.typekit.net/af/0764c4/0000000000000000774ba04d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/0764c4/0000000000000000774ba04d/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/0764c4/0000000000000000774ba04d/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "neighbor";
+    src:
+        url("https://use.typekit.net/af/7b4df6/0000000000000000774b0b24/30/l?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/7b4df6/0000000000000000774b0b24/30/d?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/7b4df6/0000000000000000774b0b24/30/a?primer=7fa3915bdafdf03041871920a205bef951d72bf64dd4c4460fb992e3ecc3a862&fvd=n4&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 400;
+    font-stretch: normal;
+}
+
+@font-face {
+    font-family: "zedou";
+    src:
+        url("https://use.typekit.net/af/c74209/0000000000000000774ba94a/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
+            format("woff2"),
+        url("https://use.typekit.net/af/c74209/0000000000000000774ba94a/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
+            format("woff"),
+        url("https://use.typekit.net/af/c74209/0000000000000000774ba94a/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3")
+            format("opentype");
+    font-display: auto;
+    font-style: normal;
+    font-weight: 300;
+    font-stretch: normal;
+}
+
+.tk-halogen {
+    font-family: "halogen", sans-serif;
+}
+.tk-monotalic {
+    font-family: "monotalic", sans-serif;
+}
+.tk-wayfinder-cf {
+    font-family: "wayfinder-cf", serif;
+}
+.tk-campaign-serif {
+    font-family: "campaign-serif", sans-serif;
+}
+.tk-hoss-round-wide {
+    font-family: "hoss-round-wide", sans-serif;
+}
+.tk-afronaut {
+    font-family: "afronaut", sans-serif;
+}
+.tk-norman-stencil {
+    font-family: "norman-stencil", sans-serif;
+}
+.tk-area-normal {
+    font-family: "area-normal", sans-serif;
+}
+.tk-aziga {
+    font-family: "aziga", sans-serif;
+}
+.tk-neighbor {
+    font-family: "neighbor", sans-serif;
+}
+.tk-zedou {
+    font-family: "zedou", sans-serif;
+}
+
+/* Recommended styles for Splitting */
+.splitting .word,
+.splitting .char {
+    display: inline-block;
+}
+
+/* Psuedo-element chars */
+.splitting .char {
+    position: relative;
+}
+
+/**
+ * Populate the psuedo elements with the character to allow for expanded effects
+ * Set to `display: none` by default; just add `display: block` when you want
+ * to use the psuedo elements
+ */
+.splitting .char::before,
+.splitting .char::after {
+    content: attr(data-char);
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    transition: inherit;
+    user-select: none;
+}
+
+/* Expanded CSS Variables */
+
+.splitting {
+    /* The center word index */
+    --word-center: calc((var(--word-total) - 1) / 2);
+
+    /* The center character index */
+    --char-center: calc((var(--char-total) - 1) / 2);
+
+    /* The center character index */
+    --line-center: calc((var(--line-total) - 1) / 2);
+}
+
+.splitting .word {
+    /* Pecent (0-1) of the word's position */
+    --word-percent: calc(var(--word-index) / var(--word-total));
+
+    /* Pecent (0-1) of the line's position */
+    --line-percent: calc(var(--line-index) / var(--line-total));
+}
+
+.splitting .char {
+    /* Percent (0-1) of the char's position */
+    --char-percent: calc(var(--char-index) / var(--char-total));
+
+    /* Offset from center, positive & negative */
+    --char-offset: calc(var(--char-index) - var(--char-center));
+
+    /* Absolute distance from center, only positive */
+    --distance: calc(
+        (var(--char-offset) * var(--char-offset)) / var(--char-center)
+    );
+
+    /* Distance from center where -1 is the far left, 0 is center, 1 is far right */
+    --distance-sine: calc(var(--char-offset) / var(--char-center));
+
+    /* Distance from center where 1 is far left/far right, 0 is center */
+    --distance-percent: calc((var(--distance) / var(--char-center)));
 }
