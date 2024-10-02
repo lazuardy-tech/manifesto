@@ -5,7 +5,10 @@ import { boot } from "@/app/utils";
 import Link from "next/link";
 
 export default function Page() {
-  useEffect(() => boot());
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    boot();
+  });
 
   return (
     <>
