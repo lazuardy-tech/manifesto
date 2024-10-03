@@ -235,11 +235,6 @@ export default function Page() {
           </Link>
           <br />
           <br />
-          <Link className="line" href="/why" target="_blank">
-            Why Lazuardy Manifesto?
-          </Link>
-          <br />
-          <br />
           <br />
           <br />
           <code>Signed at 01/10/2024</code>
