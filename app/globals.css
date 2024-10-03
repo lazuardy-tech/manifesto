@@ -30,6 +30,11 @@ body {
     overflow-x: hidden;
 }
 
+html,
+body {
+    overflow-x: hidden;
+}
+
 a {
     text-decoration: none;
     color: var(--color-link);
@@ -787,4 +792,8 @@ a:focus-visible {
 
     /* Distance from center where 1 is far left/far right, 0 is center */
     --distance-percent: calc((var(--distance) / var(--char-center)));
+}
+
+b {
+    font-weight: bold !important;
 }
